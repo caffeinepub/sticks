@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useGetCallerUserProfile } from '../hooks/useUserProfile';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Package, LogOut } from 'lucide-react';
 
@@ -10,10 +12,13 @@ interface CustomerLayoutProps {
 
 export default function CustomerLayout({ children }: CustomerLayoutProps) {
   const { clear, identity } = useInternetIdentity();
+  const { data: userProfile } = useGetCallerUserProfile();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const handleLogout = () => {
-    clear();
+  const handleLogout = async () => {
+    await clear();
+    queryClient.clear();
     navigate({ to: '/' });
   };
 
@@ -27,14 +32,21 @@ export default function CustomerLayout({ children }: CustomerLayoutProps) {
               <h1 className="text-2xl font-bold text-amber-900">StickSmart</h1>
             </div>
             {identity && (
-              <Button
-                onClick={handleLogout}
-                variant="outline"
-                className="border-amber-300 text-amber-700 hover:bg-amber-50"
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-              </Button>
+              <div className="flex items-center gap-4">
+                {userProfile && (
+                  <span className="text-sm text-amber-700 hidden sm:inline font-medium">
+                    {userProfile.name}
+                  </span>
+                )}
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="border-amber-300 text-amber-700 hover:bg-amber-50"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              </div>
             )}
           </div>
         </div>

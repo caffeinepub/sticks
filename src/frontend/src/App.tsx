@@ -1,24 +1,20 @@
-import { createRouter, createRoute, createRootRoute, RouterProvider, Outlet, useNavigate } from '@tanstack/react-router';
+import { createRouter, createRoute, createRootRoute, RouterProvider, Outlet } from '@tanstack/react-router';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/components/ui/sonner';
 import CustomerLogin from './pages/CustomerLogin';
 import CustomerOrderForm from './pages/CustomerOrderForm';
 import SellerLogin from './pages/SellerLogin';
-import SellerSignup from './pages/SellerSignup';
 import SellerDashboard from './pages/SellerDashboard';
 import SellerStockManagement from './pages/SellerStockManagement';
 import LandingPage from './pages/LandingPage';
 import CustomerLayout from './components/CustomerLayout';
 import SellerLayout from './components/SellerLayout';
-import { SellerAuthProvider } from './contexts/SellerAuthContext';
 
 const rootRoute = createRootRoute({
   component: () => (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <SellerAuthProvider>
-        <Outlet />
-        <Toaster />
-      </SellerAuthProvider>
+      <Outlet />
+      <Toaster />
     </ThemeProvider>
   ),
 });
@@ -51,12 +47,6 @@ const sellerLoginRoute = createRoute({
   component: SellerLogin,
 });
 
-const sellerSignupRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/seller/signup',
-  component: SellerSignup,
-});
-
 const sellerDashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/seller/dashboard',
@@ -82,7 +72,6 @@ const routeTree = rootRoute.addChildren([
   customerLoginRoute,
   customerOrderRoute,
   sellerLoginRoute,
-  sellerSignupRoute,
   sellerDashboardRoute,
   sellerStockRoute,
 ]);

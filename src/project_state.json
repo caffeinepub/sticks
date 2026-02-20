@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
+  "projectStateVersion": 5,
   "summary": "A website named StickSmart for ordering sticks with customer and seller portals, order management, and stock control",
   "architectural_notes": [
     "Dual user role system: customers and sellers with separate authentication flows",
@@ -66,6 +66,14 @@
         "REQ-8"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-create-backend-order-management-system-that-stores-orders-with-quantity-room-number-timestamp-customer-identity-and-completion-status",
+      "title": "Create backend order management system that stores orders with quantity, room number, timestamp, customer identity, and completion status",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -115,14 +123,6 @@
       "id": "AR-8",
       "summary": "Seller order completion tracking - ability to tick off completed orders",
       "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-12",
-      "summary": "Create backend order management system that stores orders with quantity, room number, timestamp, customer identity, and completion status",
-      "reqIds": [
-        "REQ-4"
-      ],
       "status": "pending"
     }
   ],

@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { useSellerAuth } from '../hooks/useSellerAuth';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useGetCallerUserProfile } from '../hooks/useUserProfile';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { BarChart3, LogOut, Package, LayoutDashboard } from 'lucide-react';
 
@@ -9,11 +11,14 @@ interface SellerLayoutProps {
 }
 
 export default function SellerLayout({ children }: SellerLayoutProps) {
-  const { logout, email } = useSellerAuth();
+  const { clear, identity } = useInternetIdentity();
+  const { data: userProfile } = useGetCallerUserProfile();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await clear();
+    queryClient.clear();
     navigate({ to: '/' });
   };
 
@@ -27,8 +32,10 @@ export default function SellerLayout({ children }: SellerLayoutProps) {
               <h1 className="text-2xl font-bold text-orange-900">StickSmart Seller</h1>
             </div>
             <div className="flex items-center gap-4">
-              {email && (
-                <span className="text-sm text-orange-700 hidden sm:inline">{email}</span>
+              {identity && userProfile && (
+                <span className="text-sm text-orange-700 hidden sm:inline font-medium">
+                  {userProfile.name}
+                </span>
               )}
               <Button
                 onClick={handleLogout}

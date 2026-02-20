@@ -11,6 +11,11 @@ import { IDL } from '@icp-sdk/core/candid';
 export const ProductId = IDL.Nat;
 export const ProductName = IDL.Text;
 export const Product = IDL.Record({ 'id' : ProductId, 'name' : ProductName });
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
 export const OrderId = IDL.Nat;
 export const CustomerId = IDL.Principal;
 export const RoomNumber = IDL.Text;
@@ -28,19 +33,34 @@ export const StockItem = IDL.Record({
   'inStock' : IDL.Bool,
   'product' : Product,
 });
+export const UserProfile = IDL.Record({
+  'name' : IDL.Text,
+  'roomNumber' : IDL.Opt(IDL.Text),
+});
 
 export const idlService = IDL.Service({
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
   'addOrUpdateStockItem' : IDL.Func([Product, IDL.Bool], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'completeOrder' : IDL.Func([OrderId], [OrderId], []),
   'getAllCurrentOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
   'getAllStockItems' : IDL.Func([], [IDL.Vec(StockItem)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getOrder' : IDL.Func([OrderId], [Order], ['query']),
   'getStockStatus' : IDL.Func([ProductId], [IDL.Bool], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'placeOrder' : IDL.Func(
       [IDL.Vec(Product), Quantity, RoomNumber],
       [OrderId],
       [],
     ),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
 });
 
 export const idlInitArgs = [];
@@ -49,6 +69,11 @@ export const idlFactory = ({ IDL }) => {
   const ProductId = IDL.Nat;
   const ProductName = IDL.Text;
   const Product = IDL.Record({ 'id' : ProductId, 'name' : ProductName });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
   const OrderId = IDL.Nat;
   const CustomerId = IDL.Principal;
   const RoomNumber = IDL.Text;
@@ -63,19 +88,34 @@ export const idlFactory = ({ IDL }) => {
     'products' : IDL.Vec(Product),
   });
   const StockItem = IDL.Record({ 'inStock' : IDL.Bool, 'product' : Product });
+  const UserProfile = IDL.Record({
+    'name' : IDL.Text,
+    'roomNumber' : IDL.Opt(IDL.Text),
+  });
   
   return IDL.Service({
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
     'addOrUpdateStockItem' : IDL.Func([Product, IDL.Bool], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'completeOrder' : IDL.Func([OrderId], [OrderId], []),
     'getAllCurrentOrders' : IDL.Func([], [IDL.Vec(Order)], ['query']),
     'getAllStockItems' : IDL.Func([], [IDL.Vec(StockItem)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getOrder' : IDL.Func([OrderId], [Order], ['query']),
     'getStockStatus' : IDL.Func([ProductId], [IDL.Bool], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'placeOrder' : IDL.Func(
         [IDL.Vec(Product), Quantity, RoomNumber],
         [OrderId],
         [],
       ),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   });
 };
 

@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { useSellerAuth } from '../hooks/useSellerAuth';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '../hooks/useAdminCheck';
 import { useStockStatus } from '../hooks/useStockStatus';
 import { useStockManagement } from '../hooks/useStockManagement';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import AccessDeniedScreen from '../components/AccessDeniedScreen';
 import { Package, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const PRODUCT_ID = BigInt(1);
 
 export default function SellerStockManagement() {
-  const { isAuthenticated } = useSellerAuth();
+  const { identity } = useInternetIdentity();
   const navigate = useNavigate();
+  const { data: isAdmin, isLoading: isCheckingAdmin, isFetched } = useIsCallerAdmin();
   const { stockStatus, isLoading: isLoadingStock } = useStockStatus(PRODUCT_ID);
   const { updateStock, isPending } = useStockManagement();
   const [localStockStatus, setLocalStockStatus] = useState(false);
+
+  const isAuthenticated = !!identity;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -52,8 +57,12 @@ export default function SellerStockManagement() {
     }
   };
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || isCheckingAdmin) {
     return null;
+  }
+
+  if (isFetched && !isAdmin) {
+    return <AccessDeniedScreen />;
   }
 
   return (

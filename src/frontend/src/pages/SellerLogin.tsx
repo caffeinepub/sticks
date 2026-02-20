@@ -1,41 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { useSellerAuth } from '../hooks/useSellerAuth';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '../hooks/useAdminCheck';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { BarChart3, LogIn, Loader2 } from 'lucide-react';
+import AccessDeniedScreen from '../components/AccessDeniedScreen';
 
 export default function SellerLogin() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { login, isAuthenticated, isLoading } = useSellerAuth();
+  const { login, identity, isLoggingIn, loginStatus } = useInternetIdentity();
   const navigate = useNavigate();
+  const { data: isAdmin, isLoading: isCheckingAdmin, isFetched } = useIsCallerAdmin();
+
+  const isAuthenticated = !!identity && loginStatus === 'success';
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isFetched && isAdmin) {
       navigate({ to: '/seller/dashboard' });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isAdmin, isFetched, navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email.trim() || !password.trim()) {
-      toast.error('Please enter both email and password');
-      return;
-    }
-
-    const success = await login(email, password);
-    if (success) {
-      toast.success('Login successful!');
-      navigate({ to: '/seller/dashboard' });
-    } else {
-      toast.error('Invalid credentials');
-    }
-  };
+  if (isAuthenticated && isFetched && isAdmin === false) {
+    return <AccessDeniedScreen />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-amber-50 flex items-center justify-center p-4">
@@ -51,64 +38,27 @@ export default function SellerLogin() {
             Sign in to manage orders and inventory
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-orange-900">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="seller@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="border-orange-300 focus:border-orange-500"
-              />
-            </div>
+        <CardContent className="space-y-4">
+          <Button
+            onClick={login}
+            disabled={isLoggingIn || isAuthenticated}
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+            size="lg"
+          >
+            {isLoggingIn || (isAuthenticated && isCheckingAdmin) ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                {isLoggingIn ? 'Connecting...' : 'Verifying Access...'}
+              </>
+            ) : (
+              <>
+                <LogIn className="mr-2 h-5 w-5" />
+                Sign In with Internet Identity
+              </>
+            )}
+          </Button>
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-orange-900">
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border-orange-300 focus:border-orange-500"
-              />
-            </div>
-
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white"
-              size="lg"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Signing In...
-                </>
-              ) : (
-                'Sign In'
-              )}
-            </Button>
-          </form>
-
-          <div className="text-center mt-6 space-y-2">
-            <p className="text-sm text-orange-700">
-              Don't have an account?{' '}
-              <Button
-                variant="link"
-                onClick={() => navigate({ to: '/seller/signup' })}
-                className="text-orange-600 hover:text-orange-800 p-0 h-auto font-semibold"
-              >
-                Sign Up
-              </Button>
-            </p>
+          <div className="text-center pt-4">
             <Button
               variant="ghost"
               onClick={() => navigate({ to: '/' })}
@@ -116,6 +66,12 @@ export default function SellerLogin() {
             >
               Back to Home
             </Button>
+          </div>
+
+          <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4 mt-4">
+            <p className="text-sm text-orange-800 text-center">
+              <strong>Note:</strong> Admin access is required to use the seller portal.
+            </p>
           </div>
         </CardContent>
       </Card>

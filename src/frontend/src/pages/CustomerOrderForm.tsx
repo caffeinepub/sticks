@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useGetCallerUserProfile } from '../hooks/useUserProfile';
 import { useStockStatus } from '../hooks/useStockStatus';
 import { usePlaceOrder } from '../hooks/useOrders';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ const PRODUCT_ID = BigInt(1);
 export default function CustomerOrderForm() {
   const { identity } = useInternetIdentity();
   const navigate = useNavigate();
+  const { data: userProfile, isLoading: profileLoading } = useGetCallerUserProfile();
   const [quantity, setQuantity] = useState<number>(1);
   const [roomNumber, setRoomNumber] = useState<string>('');
 
@@ -29,6 +31,12 @@ export default function CustomerOrderForm() {
       navigate({ to: '/customer/login' });
     }
   }, [identity, navigate]);
+
+  useEffect(() => {
+    if (userProfile?.roomNumber && !roomNumber) {
+      setRoomNumber(userProfile.roomNumber);
+    }
+  }, [userProfile, roomNumber]);
 
   const totalCost = quantity * STICK_PRICE;
   const isOutOfStock = !stockStatus;
@@ -58,7 +66,9 @@ export default function CustomerOrderForm() {
       });
 
       setQuantity(1);
-      setRoomNumber('');
+      if (!userProfile?.roomNumber) {
+        setRoomNumber('');
+      }
     } catch (error) {
       toast.error('Failed to place order', {
         description: error instanceof Error ? error.message : 'Please try again',
@@ -66,7 +76,7 @@ export default function CustomerOrderForm() {
     }
   };
 
-  if (!identity) {
+  if (!identity || profileLoading) {
     return null;
   }
 

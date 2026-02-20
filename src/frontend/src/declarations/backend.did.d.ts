@@ -27,14 +27,25 @@ export type Quantity = bigint;
 export type RoomNumber = string;
 export interface StockItem { 'inStock' : boolean, 'product' : Product }
 export type Time = bigint;
+export interface UserProfile { 'name' : string, 'roomNumber' : [] | [string] }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
 export interface _SERVICE {
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addOrUpdateStockItem' : ActorMethod<[Product, boolean], undefined>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'completeOrder' : ActorMethod<[OrderId], OrderId>,
   'getAllCurrentOrders' : ActorMethod<[], Array<Order>>,
   'getAllStockItems' : ActorMethod<[], Array<StockItem>>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getOrder' : ActorMethod<[OrderId], Order>,
   'getStockStatus' : ActorMethod<[ProductId], boolean>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
   'placeOrder' : ActorMethod<[Array<Product>, Quantity, RoomNumber], OrderId>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

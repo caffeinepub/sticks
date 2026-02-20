@@ -1,7 +1,9 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useCompleteOrder } from '../hooks/useCompleteOrder';
-import type { Order } from '../backend';
+import { useQuery } from '@tanstack/react-query';
+import { useActor } from '../hooks/useActor';
+import type { Order, UserProfile } from '../backend';
 import { toast } from 'sonner';
 
 interface OrderListItemProps {
@@ -11,6 +13,20 @@ interface OrderListItemProps {
 
 export default function OrderListItem({ order, orderIndex }: OrderListItemProps) {
   const { completeOrder, isPending } = useCompleteOrder();
+  const { actor } = useActor();
+
+  const { data: customerProfile } = useQuery<UserProfile | null>({
+    queryKey: ['userProfile', order.customer.toString()],
+    queryFn: async () => {
+      if (!actor) return null;
+      try {
+        return await actor.getUserProfile(order.customer);
+      } catch {
+        return null;
+      }
+    },
+    enabled: !!actor,
+  });
 
   const handleToggleComplete = async (checked: boolean) => {
     if (checked && !order.isCompleted) {
@@ -36,6 +52,8 @@ export default function OrderListItem({ order, orderIndex }: OrderListItemProps)
     return `${principal.slice(0, 6)}...${principal.slice(-6)}`;
   };
 
+  const displayCustomer = customerProfile?.name || formatPrincipal(order.customer.toString());
+
   return (
     <TableRow
       className={`${
@@ -59,8 +77,8 @@ export default function OrderListItem({ order, orderIndex }: OrderListItemProps)
       <TableCell className={order.isCompleted ? 'line-through text-gray-500' : 'text-orange-700'}>
         {formatTimestamp(order.timestamp)}
       </TableCell>
-      <TableCell className={order.isCompleted ? 'line-through text-gray-500' : 'text-orange-600 font-mono text-xs'}>
-        {formatPrincipal(order.customer.toString())}
+      <TableCell className={order.isCompleted ? 'line-through text-gray-500' : 'text-orange-600'}>
+        {displayCustomer}
       </TableCell>
     </TableRow>
   );

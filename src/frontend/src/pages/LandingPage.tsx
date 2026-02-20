@@ -1,10 +1,29 @@
 import { useNavigate } from '@tanstack/react-router';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '../hooks/useAdminCheck';
+import { useGetCallerUserProfile } from '../hooks/useUserProfile';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Package, ShoppingCart, BarChart3 } from 'lucide-react';
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { identity } = useInternetIdentity();
+  const { data: isAdmin, isFetched: adminFetched } = useIsCallerAdmin();
+  const { data: userProfile, isFetched: profileFetched } = useGetCallerUserProfile();
+
+  const isAuthenticated = !!identity;
+
+  useEffect(() => {
+    if (isAuthenticated && adminFetched && profileFetched) {
+      if (isAdmin) {
+        navigate({ to: '/seller/dashboard' });
+      } else if (userProfile) {
+        navigate({ to: '/customer/order' });
+      }
+    }
+  }, [isAuthenticated, isAdmin, userProfile, adminFetched, profileFetched, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">

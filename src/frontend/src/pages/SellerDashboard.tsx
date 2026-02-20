@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { useSellerAuth } from '../hooks/useSellerAuth';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useIsCallerAdmin } from '../hooks/useAdminCheck';
 import { useSellerOrders } from '../hooks/useSellerOrders';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import OrderListItem from '../components/OrderListItem';
+import AccessDeniedScreen from '../components/AccessDeniedScreen';
 import { Loader2, Package, AlertCircle } from 'lucide-react';
 
 export default function SellerDashboard() {
-  const { isAuthenticated } = useSellerAuth();
+  const { identity } = useInternetIdentity();
   const navigate = useNavigate();
+  const { data: isAdmin, isLoading: isCheckingAdmin, isFetched } = useIsCallerAdmin();
   const { orders, isLoading, error } = useSellerOrders();
+
+  const isAuthenticated = !!identity;
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -18,8 +23,12 @@ export default function SellerDashboard() {
     }
   }, [isAuthenticated, navigate]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || isCheckingAdmin) {
     return null;
+  }
+
+  if (isFetched && !isAdmin) {
+    return <AccessDeniedScreen />;
   }
 
   const pendingOrders = orders?.filter((order) => !order.isCompleted) || [];
@@ -72,20 +81,23 @@ export default function SellerDashboard() {
               <Loader2 className="h-8 w-8 animate-spin text-orange-600" />
             </div>
           ) : error ? (
-            <div className="flex items-center justify-center py-12 text-red-600">
-              <AlertCircle className="h-6 w-6 mr-2" />
-              <span>Failed to load orders</span>
+            <div className="flex flex-col items-center justify-center py-12 text-red-600">
+              <AlertCircle className="h-12 w-12 mb-4" />
+              <p className="text-lg font-medium">Failed to load orders</p>
+              <p className="text-sm text-red-500 mt-2">
+                {error instanceof Error ? error.message : 'Please try again later'}
+              </p>
             </div>
           ) : orders && orders.length > 0 ? (
-            <div className="rounded-md border border-orange-200">
+            <div className="rounded-lg border border-orange-200 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-orange-50">
-                    <TableHead className="font-semibold text-orange-900">Status</TableHead>
-                    <TableHead className="font-semibold text-orange-900">Quantity</TableHead>
-                    <TableHead className="font-semibold text-orange-900">Room Number</TableHead>
-                    <TableHead className="font-semibold text-orange-900">Order Time</TableHead>
-                    <TableHead className="font-semibold text-orange-900">Customer</TableHead>
+                  <TableRow className="bg-orange-50 hover:bg-orange-50">
+                    <TableHead className="w-12">Done</TableHead>
+                    <TableHead>Quantity</TableHead>
+                    <TableHead>Room</TableHead>
+                    <TableHead>Time</TableHead>
+                    <TableHead>Customer</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -97,9 +109,9 @@ export default function SellerDashboard() {
             </div>
           ) : (
             <div className="text-center py-12 text-orange-700">
-              <Package className="h-12 w-12 mx-auto mb-4 text-orange-400" />
+              <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p className="text-lg font-medium">No orders yet</p>
-              <p className="text-sm">Orders will appear here when customers place them</p>
+              <p className="text-sm mt-2">Orders will appear here once customers start placing them</p>
             </div>
           )}
         </CardContent>
