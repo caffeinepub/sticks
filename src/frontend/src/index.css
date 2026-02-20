@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.625rem;
+        --background: 0.99 0.01 45;
+        --foreground: 0.25 0.03 30;
+        --card: 1 0 0;
+        --card-foreground: 0.25 0.03 30;
+        --popover: 1 0 0;
+        --popover-foreground: 0.25 0.03 30;
+        --primary: 0.58 0.15 35;
+        --primary-foreground: 0.99 0.01 45;
+        --secondary: 0.95 0.02 50;
+        --secondary-foreground: 0.35 0.05 35;
+        --muted: 0.96 0.02 45;
+        --muted-foreground: 0.55 0.04 35;
+        --accent: 0.75 0.12 50;
+        --accent-foreground: 0.25 0.03 30;
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.99 0.01 45;
+        --border: 0.92 0.02 45;
+        --input: 0.92 0.02 45;
+        --ring: 0.58 0.15 35;
+        --chart-1: 0.58 0.15 35;
+        --chart-2: 0.75 0.12 50;
+        --chart-3: 0.65 0.18 120;
+        --chart-4: 0.48 0.20 15;
+        --chart-5: 0.70 0.10 80;
+    }
+
+    .dark {
+        --background: 0.20 0.03 30;
+        --foreground: 0.95 0.02 45;
+        --card: 0.25 0.03 30;
+        --card-foreground: 0.95 0.02 45;
+        --popover: 0.25 0.03 30;
+        --popover-foreground: 0.95 0.02 45;
+        --primary: 0.75 0.12 50;
+        --primary-foreground: 0.20 0.03 30;
+        --secondary: 0.30 0.04 35;
+        --secondary-foreground: 0.95 0.02 45;
+        --muted: 0.30 0.04 35;
+        --muted-foreground: 0.65 0.05 40;
+        --accent: 0.58 0.15 35;
+        --accent-foreground: 0.95 0.02 45;
+        --destructive: 0.50 0.25 20;
+        --destructive-foreground: 0.95 0.02 45;
+        --border: 0.35 0.04 35;
+        --input: 0.35 0.04 35;
+        --ring: 0.65 0.10 45;
+        --chart-1: 0.75 0.12 50;
+        --chart-2: 0.58 0.15 35;
+        --chart-3: 0.65 0.18 120;
+        --chart-4: 0.48 0.20 15;
+        --chart-5: 0.70 0.10 80;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    }
+}

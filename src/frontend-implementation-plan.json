@@ -1,0 +1,240 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "StickSmart Frontend Implementation - Customer and Seller Portals",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement customer authentication UI with Internet Identity sign in and sign up",
+      "acceptanceCriteria": [
+        "Customers can create new accounts",
+        "Customers can sign in to existing accounts",
+        "Authentication state persists across sessions"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/auth/InternetIdentityAuth.tsx",
+          "operation": "create",
+          "description": "Create Internet Identity authentication component with sign in and sign up buttons that integrate with ICP Internet Identity. Display authentication status and user principal. Store authentication state in React context."
+        },
+        {
+          "path": "frontend/src/contexts/AuthContext.tsx",
+          "operation": "create",
+          "description": "Create authentication context to manage customer authentication state using Internet Identity. Provide methods for login, logout, and checking authentication status. Store principal and authentication status accessible throughout the app."
+        },
+        {
+          "path": "frontend/src/hooks/useAuth.ts",
+          "operation": "create",
+          "description": "Create custom hook to access authentication context. Return current user principal, authentication status, login, and logout functions for use in customer-facing components."
+        },
+        {
+          "path": "frontend/src/pages/CustomerLogin.tsx",
+          "operation": "create",
+          "description": "Create customer login page that renders the InternetIdentityAuth component. Redirect authenticated customers to the order form. Display loading state during authentication."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap the application with AuthContext provider. Add route for customer login page at /customer/login. Implement protected route wrapper for customer-only pages that redirects unauthenticated users to login."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement seller authentication UI with email and password sign in and sign up",
+      "acceptanceCriteria": [
+        "Sellers can create accounts with email and password",
+        "Sellers can sign in with email and password credentials",
+        "Seller accounts are separate from customer accounts"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/contexts/SellerAuthContext.tsx",
+          "operation": "create",
+          "description": "Create seller authentication context separate from customer auth. Manage seller authentication state with email/password credentials. Provide login, logout, signup methods and seller authentication status."
+        },
+        {
+          "path": "frontend/src/hooks/useSellerAuth.ts",
+          "operation": "create",
+          "description": "Create custom hook to access seller authentication context. Return seller authentication status, email, login, logout, and signup functions."
+        },
+        {
+          "path": "frontend/src/pages/SellerLogin.tsx",
+          "operation": "create",
+          "description": "Create seller login page with email and password input fields using shadcn/ui Input components. Include form validation and error display. Add link to seller signup page. Call backend authentication on form submission."
+        },
+        {
+          "path": "frontend/src/pages/SellerSignup.tsx",
+          "operation": "create",
+          "description": "Create seller signup page with email, password, and confirm password fields using shadcn/ui Input components. Include form validation with password strength requirements. Display error messages for validation failures or duplicate emails. Call backend seller registration on valid submission."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap application with SellerAuthContext provider in addition to customer AuthContext. Add routes for seller login at /seller/login and seller signup at /seller/signup. Create protected route wrapper for seller-only pages that redirects to seller login if not authenticated."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Create customer order form with quantity dropdown, room number input, price display, and total calculation",
+      "acceptanceCriteria": [
+        "Dropdown allows customers to select quantity of sticks",
+        "Text input field captures room number",
+        "Price per stick (14 rupees) is clearly displayed",
+        "Total cost updates dynamically based on quantity selected",
+        "Order can be submitted to backend"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/CustomerOrderForm.tsx",
+          "operation": "create",
+          "description": "Create customer order form page with quantity dropdown (1-50 sticks) using shadcn/ui Select component and room number text input using shadcn/ui Input. Display price per stick (14 rupees) prominently. Calculate and display total cost dynamically as quantity changes. Include submit button that calls backend placeOrder method with selected quantity and room number. Show success message after successful order placement. Disable form when stock is out based on stock status from backend. Use React Query to fetch stock status and submit orders."
+        },
+        {
+          "path": "frontend/src/hooks/useOrders.ts",
+          "operation": "create",
+          "description": "Create custom hook using React Query for order operations. Implement mutation for placing orders that calls backend placeOrder method. Handle loading, error, and success states. Return placeOrder mutation function and status."
+        },
+        {
+          "path": "frontend/src/hooks/useStockStatus.ts",
+          "operation": "create",
+          "description": "Create custom hook using React Query to fetch stock status from backend getStockStatus method. Poll stock status periodically to keep UI updated. Return current stock status (in stock or out of stock) and loading state."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add route for customer order form at /customer/order. Protect this route with customer authentication wrapper so only authenticated customers can access it. Set as default landing page after customer login."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Create seller dashboard displaying all orders sorted by latest first with quantity, room number, and timestamp",
+      "acceptanceCriteria": [
+        "Orders display in descending chronological order (newest first)",
+        "Each order shows quantity ordered, room number, and order time",
+        "List updates when new orders are placed",
+        "Only authenticated sellers can access this dashboard"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/SellerDashboard.tsx",
+          "operation": "create",
+          "description": "Create seller dashboard page that displays all orders in a list sorted by timestamp descending (latest first). Fetch orders using React Query hook that calls backend getAllCurrentOrders method. Display each order with quantity, room number, formatted timestamp, and completion status. Use shadcn/ui Table component for the order list. Show loading state while fetching. Poll for new orders periodically to keep list updated. Include visual distinction between completed and pending orders."
+        },
+        {
+          "path": "frontend/src/hooks/useSellerOrders.ts",
+          "operation": "create",
+          "description": "Create custom hook using React Query to fetch all orders from backend getAllCurrentOrders method. Set up polling to refresh orders every 10 seconds. Sort orders by timestamp in descending order. Return orders array, loading state, and refetch function."
+        },
+        {
+          "path": "frontend/src/components/OrderListItem.tsx",
+          "operation": "create",
+          "description": "Create reusable order list item component that displays a single order's quantity, room number, and formatted timestamp. Accept order data as props. Use warm color scheme from theme. Display completion checkbox for REQ-7 integration."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add route for seller dashboard at /seller/dashboard. Protect this route with seller authentication wrapper so only authenticated sellers can access. Set as default landing page after seller login."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Display stock status indicator on customer order page and provide seller control to toggle stock availability",
+      "acceptanceCriteria": [
+        "Seller has a control to mark stock as in or out",
+        "When out of stock, customer order page displays red out-of-stock indicator",
+        "Order form is disabled when stock is out",
+        "Stock status persists and updates in real-time for all users"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/StockStatusIndicator.tsx",
+          "operation": "create",
+          "description": "Create stock status indicator component that displays current stock status. Show red indicator with 'Out of Stock' message when stock is unavailable. Show green indicator with 'In Stock' message when available. Use stock status from useStockStatus hook. Apply appropriate colors from the warm earthy theme (terracotta red for out of stock, sage green for in stock)."
+        },
+        {
+          "path": "frontend/src/pages/CustomerOrderForm.tsx",
+          "operation": "modify",
+          "description": "Add StockStatusIndicator component at the top of the order form. Disable the entire order form (quantity dropdown, room number input, and submit button) when stock status is out. Display explanatory text when form is disabled due to stock unavailability."
+        },
+        {
+          "path": "frontend/src/pages/SellerStockManagement.tsx",
+          "operation": "create",
+          "description": "Create seller stock management page with toggle control using shadcn/ui Switch component to mark stock as in or out. Fetch current stock status on mount using React Query. Call backend addOrUpdateStockItem method when toggle is changed. Display current stock status prominently. Show success message after updating stock status."
+        },
+        {
+          "path": "frontend/src/hooks/useStockManagement.ts",
+          "operation": "create",
+          "description": "Create custom hook using React Query mutation for updating stock status. Call backend addOrUpdateStockItem method with product and stock status. Handle loading, error, and success states. Invalidate stock status queries after successful update to refresh UI across all components."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add route for seller stock management page at /seller/stock. Protect with seller authentication wrapper. Add navigation link to this page in seller dashboard layout."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add order completion tracking with checkbox control in seller dashboard",
+      "acceptanceCriteria": [
+        "Each order in seller dashboard has a checkbox or tick control",
+        "Sellers can mark orders as completed",
+        "Completed status persists in backend",
+        "Visual distinction between pending and completed orders"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/OrderListItem.tsx",
+          "operation": "modify",
+          "description": "Add checkbox using shadcn/ui Checkbox component to each order item. Bind checkbox state to order's isCompleted status. Call completeOrder mutation when checkbox is clicked. Display completed orders with reduced opacity or strikethrough styling for visual distinction from pending orders."
+        },
+        {
+          "path": "frontend/src/hooks/useCompleteOrder.ts",
+          "operation": "create",
+          "description": "Create custom hook using React Query mutation to mark orders as completed. Call backend completeOrder method with orderId. Invalidate orders query after successful completion to refresh the order list. Handle loading and error states."
+        },
+        {
+          "path": "frontend/src/pages/SellerDashboard.tsx",
+          "operation": "modify",
+          "description": "Update dashboard to visually distinguish completed orders from pending ones. Show completed orders with muted colors or moved to a separate section. Display count of pending orders at the top of the dashboard."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Apply cohesive visual theme with warm earthy tones and clean typography across customer and seller interfaces",
+      "acceptanceCriteria": [
+        "Color palette uses warm, natural tones consistently across all pages",
+        "Typography is legible and professional",
+        "Layout prioritizes usability with clear visual hierarchy",
+        "Design is consistent between customer and seller portals"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Update global styles to implement warm earthy color palette. Define CSS custom properties for terracotta (primary), amber (accent), sage green (success), and neutral warm tones. Apply typography styles with clean, legible font stack. Set base styles for consistent spacing and layout across all pages."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Configure Tailwind theme to use warm earthy color palette. Define custom colors for terracotta, amber, sage green, and supporting neutral tones. Set up typography scale for clear hierarchy. Configure spacing and border radius for minimal, functional aesthetic."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "create",
+          "description": "Create shared layout component with consistent header, navigation, and content area structure. Apply warm color scheme to header background. Use clean typography for navigation links. Create separate variants for customer and seller portals that share the same visual language but have appropriate navigation items for each user type."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap customer routes with customer Layout component and seller routes with seller Layout component to ensure consistent design across all pages while maintaining appropriate navigation for each portal type."
+        }
+      ]
+    }
+  ]
+}

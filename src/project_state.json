@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "A website named StickSmart for ordering sticks with customer and seller portals, order management, and stock control",
+  "architectural_notes": [
+    "Dual user role system: customers and sellers with separate authentication flows",
+    "Order management system with status tracking (pending, completed)",
+    "Real-time stock availability indicator affecting customer ordering capability",
+    "Price fixed at 14 rupees per stick"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-implement-customer-authentication-system-with-sign-in-and-sign-up-functionality-using-internet-identity",
+      "title": "Implement customer authentication system with sign in and sign up functionality using Internet Identity",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-seller-authentication-system-with-email-and-password-sign-in-and-sign-up",
+      "title": "Implement seller authentication system with email and password sign in and sign up",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-customer-order-form-with-dropdown-for-quantity-selection-room-number-input-field-and-display-price-of-14-rupees-per-piece-with-total-calculation",
+      "title": "Create customer order form with dropdown for quantity selection, room number input field, and display price of 14 rupees per piece with total calculation",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-seller-dashboard-displaying-all-orders-in-a-list-sorted-by-latest-first-showing-quantity-room-number-and-timestamp-for-each-order",
+      "title": "Create seller dashboard displaying all orders in a list sorted by latest first, showing quantity, room number, and timestamp for each order",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-stock-management-system-where-seller-can-mark-items-as-out-of-stock-displaying-a-red-indicator-on-the-customer-ordering-page-and-disabling-order-placement",
+      "title": "Implement stock management system where seller can mark items as out of stock, displaying a red indicator on the customer ordering page and disabling order placement",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-order-completion-tracking-feature-allowing-sellers-to-tick-off-completed-orders-in-the-order-list",
+      "title": "Add order completion tracking feature allowing sellers to tick off completed orders in the order list",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-a-cohesive-visual-theme-with-warm-earthy-tones-terracotta-amber-sage-green-paired-with-clean-typography-and-a-minimal-layout-that-emphasizes-functionality-and-clarity-for-both-customer-and-seller-interfaces",
+      "title": "Design a cohesive visual theme with warm, earthy tones (terracotta, amber, sage green) paired with clean typography and a minimal layout that emphasizes functionality and clarity for both customer and seller interfaces",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Customer authentication (sign in/sign up)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Seller authentication (sign in/sign up with email and password)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Customer order form with dropdown for quantity and room number input",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Display stick price at 14 rupees per piece",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Seller dashboard showing orders in list form (latest on top) with room numbers",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Seller stock management - mark items as out of stock (red indicator on customer page)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Disable customer ordering when stock is marked as out",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Seller order completion tracking - ability to tick off completed orders",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Create backend order management system that stores orders with quantity, room number, timestamp, customer identity, and completion status",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "StickSmart",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

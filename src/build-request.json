@@ -1,0 +1,176 @@
+{
+  "kind": "build_request",
+  "title": "Build StickSmart ordering system with customer and seller portals",
+  "projectName": "StickSmart",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement customer authentication system with sign in and sign up functionality using Internet Identity",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "customers to sign in"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Customers can create new accounts",
+        "Customers can sign in to existing accounts",
+        "Authentication state persists across sessions"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement seller authentication system with email and password sign in and sign up",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "another option to sign in and sign up as seller",
+          "logs in with email and password"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Sellers can create accounts with email and password",
+        "Sellers can sign in with email and password credentials",
+        "Seller accounts are separate from customer accounts"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Create customer order form with dropdown for quantity selection, room number input field, and display price of 14 rupees per piece with total calculation",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "drop-down option of how many they want and the room numbers",
+          "Each stick costs 14 rupees per piece"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dropdown allows customers to select quantity of sticks",
+        "Text input field captures room number",
+        "Price per stick (14 rupees) is clearly displayed",
+        "Total cost updates dynamically based on quantity selected",
+        "Order can be submitted to backend"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Create backend order management system that stores orders with quantity, room number, timestamp, customer identity, and completion status",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "the order comes to me"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Orders are persisted with all required fields",
+        "Each order has a unique identifier",
+        "Orders include timestamp for sorting",
+        "Orders track completion status (pending or completed)"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Create seller dashboard displaying all orders in a list sorted by latest first, showing quantity, room number, and timestamp for each order",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "see the number of orders in a listed form from the latest on top and the respective room numbers beside it"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Orders display in descending chronological order (newest first)",
+        "Each order shows quantity ordered, room number, and order time",
+        "List updates when new orders are placed",
+        "Only authenticated sellers can access this dashboard"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement stock management system where seller can mark items as out of stock, displaying a red indicator on the customer ordering page and disabling order placement",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "seller should be able to put up the stock out in red on the stick ordering page",
+          "customers won't be able to order"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Seller has a control to mark stock as in or out",
+        "When out of stock, customer order page displays red out-of-stock indicator",
+        "Order form is disabled when stock is out",
+        "Stock status persists and updates in real-time for all users"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add order completion tracking feature allowing sellers to tick off completed orders in the order list",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "orders taken and completed can be ticked out by the seller for his convenience"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each order in seller dashboard has a checkbox or tick control",
+        "Sellers can mark orders as completed",
+        "Completed status persists in backend",
+        "Visual distinction between pending and completed orders"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Design a cohesive visual theme with warm, earthy tones (terracotta, amber, sage green) paired with clean typography and a minimal layout that emphasizes functionality and clarity for both customer and seller interfaces",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Color palette uses warm, natural tones consistently across all pages",
+        "Typography is legible and professional",
+        "Layout prioritizes usability with clear visual hierarchy",
+        "Design is consistent between customer and seller portals"
+      ]
+    }
+  ],
+  "constraints": [
+    "Use Internet Identity for customer authentication instead of email/password",
+    "All backend logic must be in the single main actor file",
+    "Frontend must use React, Tailwind CSS, and React Query"
+  ],
+  "nonGoals": [
+    "Payment integration (Google Pay or any payment gateway)",
+    "Email notifications to customers or sellers",
+    "SMS notifications",
+    "Advanced inventory management beyond in-stock/out-of-stock toggle",
+    "Customer order history view",
+    "Order cancellation by customers"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

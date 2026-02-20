@@ -1,0 +1,23 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining all routes for customer and seller portals with authentication wrappers and theme provider.",
+  "frontend/src/pages/LandingPage.tsx": "Landing page component displaying StickSmart branding with two portal options (customer and seller) and navigation to respective login pages.",
+  "frontend/src/pages/CustomerLogin.tsx": "Customer login page using Internet Identity authentication with automatic redirect to order form upon successful login.",
+  "frontend/src/pages/CustomerOrderForm.tsx": "Customer order form with quantity dropdown (1-50), room number input, price display (₹14/stick), total calculation, and stock status integration.",
+  "frontend/src/pages/SellerLogin.tsx": "Seller login page with email and password authentication, links to signup page, and redirect to dashboard on success.",
+  "frontend/src/pages/SellerSignup.tsx": "Seller signup page with email, password, and confirm password fields including validation for password strength and matching.",
+  "frontend/src/pages/SellerDashboard.tsx": "Seller dashboard displaying order statistics and complete order list with real-time updates, sorted by latest first.",
+  "frontend/src/pages/SellerStockManagement.tsx": "Stock management page with toggle switch for sellers to mark products as in stock or out of stock.",
+  "frontend/src/components/CustomerLayout.tsx": "Reusable layout component for customer pages with header, navigation, logout button, and footer with caffeine.ai attribution.",
+  "frontend/src/components/SellerLayout.tsx": "Reusable layout component for seller pages with header, navigation between dashboard and stock management, and footer.",
+  "frontend/src/components/StockStatusIndicator.tsx": "Component displaying current stock status with color-coded indicators (green for in stock, red for out of stock).",
+  "frontend/src/components/OrderListItem.tsx": "Table row component for individual orders with checkbox for completion, displaying quantity, room number, timestamp, and customer principal.",
+  "frontend/src/contexts/SellerAuthContext.tsx": "React context provider managing seller authentication state with localStorage-based email/password authentication.",
+  "frontend/src/hooks/useSellerAuth.ts": "Custom hook providing access to seller authentication context including login, signup, and logout functions.",
+  "frontend/src/hooks/useOrders.ts": "React Query hook for placing customer orders with automatic cache invalidation.",
+  "frontend/src/hooks/useStockStatus.ts": "React Query hook fetching stock status with 5-second polling interval for real-time updates.",
+  "frontend/src/hooks/useSellerOrders.ts": "React Query hook fetching all orders sorted by timestamp descending with 10-second polling for real-time updates.",
+  "frontend/src/hooks/useStockManagement.ts": "React Query mutation hook for updating stock availability with cache invalidation.",
+  "frontend/src/hooks/useCompleteOrder.ts": "React Query mutation hook for marking orders as completed with automatic order list refresh.",
+  "frontend/src/index.css": "Global styles with warm earthy OKLCH color palette (terracotta, amber, sage green) for both light and dark modes.",
+  "frontend/tailwind.config.js": "Tailwind configuration with custom warm color tokens and design system settings."
+}

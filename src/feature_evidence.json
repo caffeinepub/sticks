@@ -1,0 +1,150 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-customer-authentication-system-with-sign-in-and-sign-up-functionality-using-internet-identity",
+      "featureTitle": "Implement customer authentication system with sign in and sign up functionality using Internet Identity",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/CustomerLogin.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-seller-authentication-system-with-email-and-password-sign-in-and-sign-up",
+      "featureTitle": "Implement seller authentication system with email and password sign in and sign up",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/contexts/SellerAuthContext.tsx",
+        "frontend/src/hooks/useSellerAuth.ts",
+        "frontend/src/pages/SellerLogin.tsx",
+        "frontend/src/pages/SellerSignup.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-customer-order-form-with-dropdown-for-quantity-selection-room-number-input-field-and-display-price-of-14-rupees-per-piece-with-total-calculation",
+      "featureTitle": "Create customer order form with dropdown for quantity selection, room number input field, and display price of 14 rupees per piece with total calculation",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useOrders.ts",
+        "frontend/src/hooks/useStockStatus.ts",
+        "frontend/src/pages/CustomerOrderForm.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-seller-dashboard-displaying-all-orders-in-a-list-sorted-by-latest-first-showing-quantity-room-number-and-timestamp-for-each-order",
+      "featureTitle": "Create seller dashboard displaying all orders in a list sorted by latest first, showing quantity, room number, and timestamp for each order",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/OrderListItem.tsx",
+        "frontend/src/hooks/useSellerOrders.ts",
+        "frontend/src/pages/SellerDashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-stock-management-system-where-seller-can-mark-items-as-out-of-stock-displaying-a-red-indicator-on-the-customer-ordering-page-and-disabling-order-placement",
+      "featureTitle": "Implement stock management system where seller can mark items as out of stock, displaying a red indicator on the customer ordering page and disabling order placement",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/StockStatusIndicator.tsx",
+        "frontend/src/hooks/useStockManagement.ts",
+        "frontend/src/pages/CustomerOrderForm.tsx",
+        "frontend/src/pages/SellerStockManagement.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-order-completion-tracking-feature-allowing-sellers-to-tick-off-completed-orders-in-the-order-list",
+      "featureTitle": "Add order completion tracking feature allowing sellers to tick off completed orders in the order list",
+      "files": [
+        "frontend/src/components/OrderListItem.tsx",
+        "frontend/src/hooks/useCompleteOrder.ts",
+        "frontend/src/pages/SellerDashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-design-a-cohesive-visual-theme-with-warm-earthy-tones-terracotta-amber-sage-green-paired-with-clean-typography-and-a-minimal-layout-that-emphasizes-functionality-and-clarity-for-both-customer-and-seller-interfaces",
+      "featureTitle": "Design a cohesive visual theme with warm, earthy tones (terracotta, amber, sage green) paired with clean typography and a minimal layout that emphasizes functionality and clarity for both customer and seller interfaces",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
